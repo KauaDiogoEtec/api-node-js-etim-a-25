@@ -1,12 +1,12 @@
 const express = require('express'); 
 const router = express.Router(); 
 
-const UsuariosController = require('../controllers/usuarios'); 
+const FAQController = require('../controllers/faq'); 
 
-router.get('/usuarios', UsuariosController.listarUsuarios); 
-router.post('/usuarios', UsuariosController.cadastrarUsuarios); 
-router.patch('/usuarios', UsuariosController.editarUsuarios); 
-router.delete('/usuarios', UsuariosController.apagarUsuarios); 
+router.get('/usuarios', FAQController.listarFAQ); 
+router.post('/usuarios', FAQController.adicionarFAQ); 
+router.patch('/usuarios', FAQController.editarFAQ); 
+router.delete('/usuarios', FAQController.removerFAQ); 
 
 
 module.exports = router;
