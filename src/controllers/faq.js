@@ -36,10 +36,30 @@ module.exports = {
     }, 
     async adicionarFAQ(request, response) {
         try {
+            const { usu_id, faq_pergunta, faq_resposta } = request.body;
+
+            const sql = `
+                INSERT INTO FAQ
+                    (usu_id, faq_pergunta, faq_resposta)
+                VALUES
+                    (?, ?, ?);
+            `;
+
+            const values = [usu_id, faq_pergunta, faq_resposta];
+
+            const [result] = await db.query(sql, values);
+
+            const dados = {
+                faq_id: result.insertId,
+                usu_id,
+                faq_pergunta,
+                faq_resposta
+            };
+
             return response.status(200).json({
                 sucesso: true, 
                 mensagem: 'Adicionar pergunta no FAQ', 
-                dados: null
+                dados: dados
             });
         } catch (error) {
             return response.status(500).json({
