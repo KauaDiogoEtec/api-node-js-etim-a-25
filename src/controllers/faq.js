@@ -71,10 +71,39 @@ module.exports = {
     }, 
     async editarFAQ(request, response) {
         try {
+            const { usu_id, faq_pergunta, faq_resposta } = request.body;
+
+            const { id } = request.params;
+
+            const sql = `
+                UPDATE FAQ SET
+                    usu_id = ?, faq_pergunta = ?, faq_resposta = ?
+                WHERE
+                    faq_id = ?;
+            `;
+
+            const values = [usu_id, faq_pergunta, faq_resposta, id];
+            const [result] = await db.query(sql, values);
+
+            if (result.affectedRows === 0) {
+                return response.status(404).json({
+                    sucesso: false, 
+                    mensagem: 'Registro não encontrado.', 
+                    dados: null
+                });
+            }
+
+            const dados = {
+                faq_id: id,
+                usu_id,
+                faq_pergunta,
+                faq_resposta
+            }
+
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Alteração de uma pergunta do FAQ', 
-                dados: null
+                mensagem: `Alteração na pergunta ${id} do FAQ`, 
+                dados: dados
             });
         } catch (error) {
             return response.status(500).json({
@@ -86,9 +115,26 @@ module.exports = {
     },
     async removerFAQ(request, response) {
         try {
+            const { id } = request.params;
+
+            const sql = `
+                DELETE FROM FAQ
+                WHERE faq_id = ?;
+            `;
+            const values = [id];
+            const [result] = await db.query(sql, values);
+
+            if (result.affectedRows === 0) {
+                return response.status(404).json({
+                    sucesso: false, 
+                    mensagem: 'Registro não encontrado.', 
+                    dados: null
+                });
+            }
+
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Exclusão de uma pergunta do FAQ', 
+                mensagem: `Exclusão da pergunta ${id} do FAQ`, 
                 dados: null
             });
         } catch (error) {
