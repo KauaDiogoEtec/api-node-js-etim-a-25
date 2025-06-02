@@ -1,12 +1,8 @@
 const express = require('express'); 
 const router = express.Router(); 
 
-const FAQController = require('../controllers/faq'); 
+const RotasKaua = require('./routesKaua');
 
-router.get('/faq', FAQController.listarFAQ); 
-router.post('/faq', FAQController.adicionarFAQ); 
-router.patch('/faq/:id', FAQController.editarFAQ); 
-router.delete('/faq/:id', FAQController.removerFAQ); 
-
+router.use('/', RotasKaua);
 
 module.exports = router;
